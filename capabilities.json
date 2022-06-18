@@ -1,0 +1,89 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Columns",
+            "name": "columns",
+            "kind": "Grouping"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "categorical": {
+                "categories": {
+                    "for": {
+                        "in": "columns"
+                    }
+                }
+            }
+        }
+    ],
+    "objects": {
+        "general": {
+            "displayName": "General",
+            "displayNameKey": "formattingGeneral",
+            "properties": {
+                "filter": {
+                    "type": {
+                        "filter": true
+                    }
+                }
+            }
+        },
+        "formatting": {
+            "displayName": "Formatting",
+            "properties": {
+                "fontSize": {
+                    "displayName": "Font size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font family",
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "fontColor": {
+                    "displayName": "Font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "padding": {
+                    "displayName": "Padding",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "fill": {
+                    "displayName": "Fill",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "supportsHighlight": true,	
+    "suppressDefaultTitle": true,	
+    "supportsSynchronizingFilterState": true,	
+    "supportsLandingPage": true,
+    "supportsEmptyDataView": true,
+    "sorting": {	
+        "default": {}	
+    },
+    "tooltips": {
+        "supportEnhancedTooltips": true
+    }
+}

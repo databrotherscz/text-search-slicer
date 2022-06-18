@@ -1,0 +1,14 @@
+.vscode
+
+# npm packages
+node_modules
+
+# Power BI custom visuals
+.tmp
+*.pbiviz
+
+# Build artifacts
+dist
+
+# webpack.statistics
+webpack.statistics.*

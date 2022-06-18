@@ -1,0 +1,25 @@
+{
+    "visual": {
+        "name": "text-search-slicer",
+        "displayName": "Text slicer",
+        "guid": "textSearchSlicerF85E2E78BE4A4D7D9F99ED75B5D71C85",
+        "visualClassName": "Visual",
+        "version": "1.0.0",
+        "description": "test",
+        "supportUrl": "https://databrothers.cz/",
+        "gitHubUrl": "https://github.com/databrothers-code-storage"
+    },
+    "apiVersion": "3.8.0",
+    "author": {
+        "name": "Adam Hrouda",
+        "email": "adam.hrouda@databrothers.cz"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}
