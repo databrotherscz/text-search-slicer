@@ -11,13 +11,6 @@ class FilterService {
         this.host = host;
     }
 
-    public setCategories(category: DataViewCategoryColumn) {           
-        let target = {
-            table: category.source.queryName.substring(0, category.source.queryName.indexOf(".")),
-            column: category.source.displayName,
-        };
-    }
-
     public setFilter(value: string, target: IFilterColumnTarget) {       
         if (!target) {
             console.error("Filter target is null");  

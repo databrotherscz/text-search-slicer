@@ -8,9 +8,9 @@ export class VisualSettings extends DataViewObjectsParser {
 }
 
 export class formattingSettings {
-    public fontColor: string = "#000000";
-    public fontSize: number = 8;
-    public fontFamily: string = "Calibri";
+    public fontColor: string = "#252423";
+    public fontSize: number = 10;
+    public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
     public fill: string = "#ffffff";
-    public padding: number = 0;
+    public padding: number = 5;
 }

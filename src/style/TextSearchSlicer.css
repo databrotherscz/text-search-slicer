@@ -1,0 +1,57 @@
+.input-field {
+    font-family: inherit;
+    color: inherit;
+    font-size: inherit;
+    background: transparent;
+
+    border: none;
+    padding: 5px;
+    width: 100%;
+}
+
+.input-button {
+    border: none;
+    background: transparent;
+    font-size: inherit;
+}
+
+*:focus {
+    outline: 1px solid transparent;
+}
+
+.input-button:hover {
+    background: #eaeaea;
+}
+
+.input-button:active {
+    background: #d1d1d1;
+}
+
+.input-container {
+    border: 1px solid #eaeaea;
+    display: flex;
+    width: 100%;
+}
+
+.target-container {
+    margin: 2px 0 0 0 ;
+    display: flex;
+    gap: 2px;
+}
+
+.target-button {
+    font-family: inherit;
+    padding: 2px 8px;
+    font-size: 0.75em;  
+    border: none;
+
+    background: #eeeeee;
+}
+
+.target-button__active {
+    background: #bbbbbb;
+}
+
+.target-button:hover {
+    background: #d1d1d1;
+}

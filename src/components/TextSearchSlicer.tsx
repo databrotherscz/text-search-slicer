@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import FilterService from "../services/filterService";
 import { VisualSettings } from "../settings";
 import powerbi from "powerbi-visuals-api";
+import "../style/TextSearchSlicer.css";
 
 // -------------------- TYPES --------------------
 
@@ -12,14 +13,15 @@ interface IUpdatableSearchSlicerState {
 }
 
 interface ITextSearchSlicerState {
-    inputText?: string,
-    currentFilterValue?: string,
     isLoaded?: boolean,
     width?: number,
     height?: number,
     settings?: VisualSettings,
+    inputText?: string,
     targets?: IFilterColumnTarget[],
-    currentTarget?: IFilterColumnTarget
+    currentTargetIndex?: number,
+    currentFilterValue?: string,
+    currentFilterTargetIndex?: number
 }
 
 type UpdateVisualComponent = (newState: ITextSearchSlicerState) => void;
@@ -36,12 +38,14 @@ const initialState: ITextSearchSlicerState = {
     width: 10,
     height: 10,
     settings: null,
-    
-    currentFilterValue: null,
+
     inputText: null,
-    
-    targets: null,
-    currentTarget: null
+    targets: [],
+    currentTargetIndex: 0,
+
+    currentFilterValue: null,
+    currentFilterTargetIndex: null
+
 };
 
 let updateVisualComponentState: UpdateVisualComponent = null;
@@ -53,7 +57,12 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         updateVisualComponentState = (newState) => {
             setState(prevState => ({
                 ...prevState,
-                ...newState
+                ...newState,
+                // set index if it is present in newState otherwise check if previous index is in bound and possibly set to 0
+                currentTargetIndex: (newState.currentTargetIndex === null || newState.currentTargetIndex === undefined) ?
+                    (((newState.targets === null || newState.targets === undefined) || (prevState.currentTargetIndex <= newState.targets.length - 1)) ? prevState.currentTargetIndex : 0)
+                    :
+                    newState.currentTargetIndex
             }));
         };
 
@@ -74,13 +83,16 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         applyFilter();
     };
 
-    const onTextInputBlur = () => {
-        console.log("Blur");
+    const onTargetButtonClick = (selectedIndex: number) => {
+        setState({
+            ...state,
+            currentTargetIndex: selectedIndex
+        });
     };
 
     const applyFilter = () => {
         if (state.inputText) {
-            props.filterService.setFilter(state.inputText, state.targets[0]);
+            props.filterService.setFilter(state.inputText, state.targets[state.currentTargetIndex]);
         }
         else {
             clearFilter();
@@ -95,21 +107,61 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         props.filterService.clearFilter();
     };
 
+    const getVisualContainerStyle = () => {
+        let style: React.CSSProperties = {
+            width: state.width,
+            height: state.height,
+            fontFamily: state.settings?.formatting?.fontFamily,
+            color: state.settings?.formatting?.fontColor,
+            fontSize: state.settings?.formatting?.fontSize
+        };
+        return style;
+    };
+
     return (
-        <div style={{ width: state.width, height: state.height, display: state.isLoaded ? "block" : "none" }}>
-            <div style={{ display: "flex", width: "100%" }}>
-                <input style={{ width: "100%", fontFamily: '"Segoe UI", wf_segoe-ui_normal, helvetica, arial, sans-serif' }} type="text" value={state.inputText} onChange={onTextInputChange} onKeyDown={onTextInputKeyDown} onBlur={onTextInputBlur} />
-                <button onClick={applyFilter}>✔</button>
-                <button onClick={clearFilter}>⨉</button>
+        state.isLoaded ? (
+            <div style={getVisualContainerStyle()}>
+                {
+                    (state.targets && state.targets.length > 0) ? (
+                        <>
+                            <div className="input-container" style={{ background: state.settings?.formatting?.fill }}>
+                                <input
+                                    className="input-field"
+                                    style={{
+                                        padding: `${state.settings?.formatting?.padding}px`
+                                    }}
+                                    type="text"
+                                    value={state.inputText}
+                                    onChange={onTextInputChange}
+                                    onKeyDown={onTextInputKeyDown} />
+                                <button className="input-button" onClick={applyFilter}>🔍</button>
+                                <button className="input-button" onClick={clearFilter}>🚽</button>
+                            </div>
+
+                            {
+                                (state.targets.length > 1) ? (
+                                    <div className="target-container">
+                                        {state.targets?.map((target, targetIndex) => (
+                                            <button className={`target-button ${state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => onTargetButtonClick(targetIndex)}>
+                                                {target.column}
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    null
+                                )
+                            }
+                        </>
+                    ) : (
+                        <div>
+                            No columns selected
+                        </div>
+                    )
+                }
             </div>
-            <div style={{ display: "flex", width: "100%" }}>
-                {state.targets?.map(t => (
-                    <button>
-                        {t.column}
-                    </button>
-                ))}
-            </div>
-        </div>
+        ) : (
+            null
+        )
     )
 }
 
