@@ -1,7 +1,7 @@
 import powerbi from "powerbi-visuals-api";
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import DataViewCategoryColumn = powerbi.DataViewCategoryColumn;
-import { AdvancedFilter, BasicFilter, FilterType, IAdvancedFilter, IAdvancedFilterCondition, IBasicFilter, IFilterColumnTarget, ITupleFilter, ITupleFilterTarget } from "powerbi-models";
+import { AdvancedFilter, BasicFilter, FilterType, IAdvancedFilter, IAdvancedFilterCondition, IBasicFilter, IFilterColumnTarget, ITupleFilter, ITupleFilterTarget,  } from "powerbi-models";
 import FilterAction = powerbi.FilterAction;
 
 class FilterService {

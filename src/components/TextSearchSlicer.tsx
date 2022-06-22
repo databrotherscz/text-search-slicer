@@ -45,7 +45,6 @@ const initialState: ITextSearchSlicerState = {
 
     currentFilterValue: null,
     currentFilterTargetIndex: null
-
 };
 
 let updateVisualComponentState: UpdateVisualComponent = null;
@@ -78,6 +77,14 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         });
     };
 
+    const onSearchButtonClick = () => {
+        applyFilter();
+    };
+
+    const onClearButtonClick = () => {
+        clearFilter();
+    };
+
     const onTextInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== "Enter") return;
         applyFilter();
@@ -88,11 +95,14 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
             ...state,
             currentTargetIndex: selectedIndex
         });
+        applyFilter(selectedIndex);
     };
 
-    const applyFilter = () => {
+    const applyFilter = (newTargetIndex: number = null) => {
+        const targetIndex = newTargetIndex === null ? state.currentTargetIndex : newTargetIndex;
+
         if (state.inputText) {
-            props.filterService.setFilter(state.inputText, state.targets[state.currentTargetIndex]);
+            props.filterService.setFilter(state.inputText, state.targets[targetIndex]);
         }
         else {
             clearFilter();
@@ -134,8 +144,8 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                                     value={state.inputText}
                                     onChange={onTextInputChange}
                                     onKeyDown={onTextInputKeyDown} />
-                                <button className="input-button" onClick={applyFilter}>🔍</button>
-                                <button className="input-button" onClick={clearFilter}>🚽</button>
+                                <button className="input-button" onClick={onSearchButtonClick}>🔍</button>
+                                <button className="input-button" onClick={onClearButtonClick}>🚽</button>
                             </div>
 
                             {
