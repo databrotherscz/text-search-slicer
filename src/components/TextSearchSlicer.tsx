@@ -40,10 +40,14 @@ const initialState: ITextSearchSlicerState = {
     settings: null,
 
     inputText: null,
+    // all columns
     targets: [],
+    // index of selected column
     currentTargetIndex: 0,
 
+    // applied filter's value 
     currentFilterValue: null,
+    // applied filter's column index
     currentFilterTargetIndex: null
 };
 
@@ -82,12 +86,28 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
     };
 
     const onClearButtonClick = () => {
+        setState({
+            ...state,
+            inputText: ""
+        });
         clearFilter();
     };
 
     const onTextInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key !== "Enter") return;
-        applyFilter();
+        if (e.key === "Enter") {
+            applyFilter();
+        }
+    };
+
+    const onTextInputBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+        if (!e.relatedTarget || (!e.relatedTarget.classList.contains("input-button") && !e.relatedTarget.classList.contains("target-button"))) {
+            setState({
+                ...state,
+                inputText: state.currentFilterValue || ""
+            });
+            
+            console.log("clear");  
+        }
     };
 
     const onTargetButtonClick = (selectedIndex: number) => {
@@ -95,6 +115,7 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
             ...state,
             currentTargetIndex: selectedIndex
         });
+
         applyFilter(selectedIndex);
     };
 
@@ -110,10 +131,6 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
     };
 
     const clearFilter = () => {
-        setState({
-            ...state,
-            inputText: ""
-        });
         props.filterService.clearFilter();
     };
 
@@ -143,7 +160,8 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                                     type="text"
                                     value={state.inputText}
                                     onChange={onTextInputChange}
-                                    onKeyDown={onTextInputKeyDown} />
+                                    onKeyDown={onTextInputKeyDown}
+                                    onBlur={onTextInputBlur} />
                                 <button className="input-button" onClick={onSearchButtonClick}>🔍</button>
                                 <button className="input-button" onClick={onClearButtonClick}>🚽</button>
                             </div>
