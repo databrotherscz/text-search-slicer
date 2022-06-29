@@ -5,7 +5,6 @@
     background: transparent;
 
     border: none;
-    padding: 5px;
     width: 100%;
 }
 
@@ -13,6 +12,9 @@
     border: none;
     background: transparent;
     font-size: inherit;
+    padding: 0 5px;
+    width: fit-content;
+    text-align: center;
 }
 
 *:focus {
@@ -41,8 +43,9 @@
 
 .target-button {
     font-family: inherit;
-    padding: 2px 8px;
-    font-size: 0.75em;  
+    color: #1d1d1b;
+    padding: 3px 9px;
+    font-size: 0.9em;  
     border: none;
 
     background: #eeeeee;

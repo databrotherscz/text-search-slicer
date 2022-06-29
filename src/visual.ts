@@ -4,29 +4,25 @@ import powerbi from "powerbi-visuals-api";
 import VisualComponent, { updateVisualComponentState, ITextSearchSlicerState } from "./components/TextSearchSlicer";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "./../style/visual.less";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
-import VisualUpdateType = powerbi.VisualUpdateType;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 import { VisualSettings } from "./settings";
 import FilterService from "./services/filterService";
 import { IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
-
 export class Visual implements IVisual {
     private target: HTMLElement;
     private settings: VisualSettings;
     private reactRoot: React.FunctionComponentElement<any>;
 
     constructor(options: VisualConstructorOptions) {
-        console.log("Visual constructor", options);
+        // console.log("Visual constructor", options);
 
         this.target = options.element;
-
         this.reactRoot = React.createElement(VisualComponent, {
             filterService: new FilterService(options.host),
         });
@@ -34,16 +30,12 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        console.log("Visual update", options);
+        // console.log("Visual update", options);
         
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log(this.settings);
+        // console.log(this.settings);
         
         this.tryUpdateVisualComponentState(options);
-    }
-
-    private static parseSettings(dataView: DataView): VisualSettings {
-        return <VisualSettings>VisualSettings.parse(dataView);
     }
 
     private tryUpdateVisualComponentState(options: VisualUpdateOptions) {        
@@ -99,6 +91,10 @@ export class Visual implements IVisual {
         if (!updateFunction()) {
             setTimeout(updateFunction, 100);
         }
+    }
+
+    private static parseSettings(dataView: DataView): VisualSettings {
+        return <VisualSettings>VisualSettings.parse(dataView);
     }
 
     /**

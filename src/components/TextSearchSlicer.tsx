@@ -5,12 +5,9 @@ import FilterService from "../services/filterService";
 import { VisualSettings } from "../settings";
 import powerbi from "powerbi-visuals-api";
 import "../style/TextSearchSlicer.css";
+import { CrossIcon, SearchIcon } from "./Icons";
 
 // -------------------- TYPES --------------------
-
-interface IUpdatableSearchSlicerState {
-
-}
 
 interface ITextSearchSlicerState {
     isLoaded?: boolean,
@@ -90,7 +87,7 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
             ...state,
             inputText: ""
         });
-        clearFilter();
+        props.filterService.clearFilter();
     };
 
     const onTextInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -105,8 +102,6 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                 ...state,
                 inputText: state.currentFilterValue || ""
             });
-            
-            console.log("clear");  
         }
     };
 
@@ -126,12 +121,8 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
             props.filterService.setFilter(state.inputText, state.targets[targetIndex]);
         }
         else {
-            clearFilter();
+            props.filterService.clearFilter();
         }
-    };
-
-    const clearFilter = () => {
-        props.filterService.clearFilter();
     };
 
     const getVisualContainerStyle = () => {
@@ -162,14 +153,18 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                                     onChange={onTextInputChange}
                                     onKeyDown={onTextInputKeyDown}
                                     onBlur={onTextInputBlur} />
-                                <button className="input-button" onClick={onSearchButtonClick}>🔍</button>
-                                <button className="input-button" onClick={onClearButtonClick}>🚽</button>
+                                <button className="input-button" onClick={onSearchButtonClick}>
+                                    <SearchIcon fill={state.settings?.formatting?.fontColor}></SearchIcon >
+                                </button>
+                                <button className="input-button" onClick={onClearButtonClick}>
+                                    <CrossIcon fill={state.settings?.formatting?.fontColor}></CrossIcon >
+                                </button>
                             </div>
 
                             {
                                 (state.targets.length > 1) ? (
                                     <div className="target-container">
-                                        {state.targets?.map((target, targetIndex) => (
+                                        {state.targets.map((target, targetIndex) => (
                                             <button className={`target-button ${state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => onTargetButtonClick(targetIndex)}>
                                                 {target.column}
                                             </button>
