@@ -6,6 +6,7 @@ import { VisualSettings } from "../settings";
 import powerbi from "powerbi-visuals-api";
 import "../style/TextSearchSlicer.css";
 import { CrossIcon, SearchIcon } from "./Icons";
+import { convertFontSize } from "../helpers/pbiStyle";
 
 // -------------------- TYPES --------------------
 
@@ -125,39 +126,59 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         }
     };
 
-    const getVisualContainerStyle = () => {
-        let style: React.CSSProperties = {
-            width: state.width,
-            height: state.height,
-            fontFamily: state.settings?.formatting?.fontFamily,
-            color: state.settings?.formatting?.fontColor,
-            fontSize: state.settings?.formatting?.fontSize
-        };
-        return style;
+    const visualContainerStyle: React.CSSProperties = {
+        width: state.width,
+        height: state.height,
+        fontFamily: state.settings?.slicerRormatting?.fontFamily,
+        color: state.settings?.slicerRormatting?.inputFontColor,
+        fontSize: convertFontSize(state.settings?.slicerRormatting?.fontSize),
+        margin: "5px 5px 0 5px"
     };
+
+    const inputFieldStyle: React.CSSProperties = {
+        paddingTop: `${state.settings?.slicerRormatting?.padding + 1}px`,
+        paddingLeft: `${state.settings?.slicerRormatting?.padding + 1}px`,
+        paddingRight: `${state.settings?.slicerRormatting?.padding + 1}px`,
+        paddingBottom: `${state.settings?.slicerRormatting?.padding - 1}px`
+    };
+
+    const placeholderCss = `
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: ${state.settings?.slicerRormatting?.placeholderFontColor};
+            opacity: 1; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: ${state.settings?.slicerRormatting?.placeholderFontColor};
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: ${state.settings?.slicerRormatting?.placeholderFontColor};
+        }
+    `;
 
     return (
         state.isLoaded ? (
-            <div style={getVisualContainerStyle()}>
+            <div style={visualContainerStyle}>
                 {
                     (state.targets && state.targets.length > 0) ? (
                         <>
-                            <div className="input-container" style={{ background: state.settings?.formatting?.fill }}>
+                            <style> {placeholderCss} </style>
+                            <div className="input-container" style={{ background: state.settings?.slicerRormatting?.fill }}>
                                 <input
                                     className="input-field"
-                                    style={{
-                                        padding: `${state.settings?.formatting?.padding}px`
-                                    }}
+                                    style={inputFieldStyle}
+                                    placeholder={state.settings?.slicerRormatting?.placeholderString}
                                     type="text"
                                     value={state.inputText}
                                     onChange={onTextInputChange}
                                     onKeyDown={onTextInputKeyDown}
                                     onBlur={onTextInputBlur} />
                                 <button className="input-button" onClick={onSearchButtonClick}>
-                                    <SearchIcon fill={state.settings?.formatting?.fontColor}></SearchIcon >
+                                    <SearchIcon fill={state.settings?.slicerRormatting?.inputFontColor}></SearchIcon >
                                 </button>
                                 <button className="input-button" onClick={onClearButtonClick}>
-                                    <CrossIcon fill={state.settings?.formatting?.fontColor}></CrossIcon >
+                                    <CrossIcon fill={state.settings?.slicerRormatting?.inputFontColor}></CrossIcon >
                                 </button>
                             </div>
 
@@ -177,7 +198,7 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                         </>
                     ) : (
                         <div>
-                            No columns selected
+                            {state.settings?.slicerRormatting?.notSelectedString}
                         </div>
                     )
                 }

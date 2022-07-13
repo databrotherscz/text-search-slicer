@@ -1,9 +1,14 @@
 {
     "dataRoles": [
         {
-            "displayName": "Columns",
-            "name": "columns",
-            "kind": "Grouping"
+            "displayName": "Fields",
+            "name": "fields",
+            "kind": "Grouping",
+            "requiredTypes": [
+                {
+                    "text": true
+                }
+            ]
         }
     ],
     "dataViewMappings": [
@@ -11,7 +16,7 @@
             "categorical": {
                 "categories": {
                     "for": {
-                        "in": "columns"
+                        "in": "fields"
                     }
                 }
             }
@@ -29,8 +34,8 @@
                 }
             }
         },
-        "formatting": {
-            "displayName": "Formatting",
+        "slicerRormatting": {
+            "displayName": "Slicer formatting",
             "properties": {
                 "fontSize": {
                     "displayName": "Font size",
@@ -46,8 +51,18 @@
                         }
                     }
                 },
-                "fontColor": {
-                    "displayName": "Font color",
+                "inputFontColor": {
+                    "displayName": "Input font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "placeholderFontColor": {
+                    "displayName": "Placeholder font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -71,19 +86,25 @@
                             }
                         }
                     }
+                },
+                "placeholderString": {
+                    "displayName": "Placeholder",
+                    "type": {   
+                        "text": true
+                    }
+                },
+                "notSelectedString": {
+                    "displayName": "No fields selected",
+                    "type": {   
+                        "text": true
+                    }
                 }
             }
         }
     },
-    "supportsHighlight": true,	
+    "supportsHighlight": false,	
     "suppressDefaultTitle": true,	
     "supportsSynchronizingFilterState": true,	
     "supportsLandingPage": true,
-    "supportsEmptyDataView": true,
-    "sorting": {	
-        "default": {}	
-    },
-    "tooltips": {
-        "supportEnhancedTooltips": true
-    }
+    "supportsEmptyDataView": true
 }

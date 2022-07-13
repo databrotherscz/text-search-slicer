@@ -14,14 +14,13 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 import { VisualSettings } from "./settings";
 import FilterService from "./services/filterService";
 import { IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
+
 export class Visual implements IVisual {
     private target: HTMLElement;
     private settings: VisualSettings;
     private reactRoot: React.FunctionComponentElement<any>;
 
     constructor(options: VisualConstructorOptions) {
-        // console.log("Visual constructor", options);
-
         this.target = options.element;
         this.reactRoot = React.createElement(VisualComponent, {
             filterService: new FilterService(options.host),
@@ -30,10 +29,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        // console.log("Visual update", options);
-        
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        // console.log(this.settings);
         
         this.tryUpdateVisualComponentState(options);
     }
@@ -43,9 +39,9 @@ export class Visual implements IVisual {
 
         let newState: ITextSearchSlicerState = {
             isLoaded: true,
-            // minus outer border
-            height: options.viewport.height - 2,
-            width: options.viewport.width - 2,
+            // minus outer border and margin
+            height: options.viewport.height - 2 - 5,
+            width: options.viewport.width - 2 - 10,
             settings: this.settings
         };
 

@@ -4,13 +4,16 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class VisualSettings extends DataViewObjectsParser {
-    public formatting: formattingSettings = new formattingSettings();
+    public slicerRormatting: slicerFormattingSettings = new slicerFormattingSettings();
 }
 
-export class formattingSettings {
-    public fontColor: string = "#252423";
-    public fontSize: number = 10;
+export class slicerFormattingSettings {
+    public inputFontColor: string = "#333333";
+    public placeholderFontColor: string = "#b3b3b3";
+    public fontSize: number = 8;
     public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
     public fill: string = "#ffffff";
-    public padding: number = 5;
+    public padding: number = 4;
+    public placeholderString: string = "Search";
+    public notSelectedString: string = "No fields selected";
 }
