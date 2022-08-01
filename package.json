@@ -1,10 +1,6 @@
 {
   "name": "text-search-slicer",
-  "description": "default_template_value",
-  "repository": {
-    "type": "default_template_value",
-    "url": "default_template_value"
-  },
+  "description": "Text search slicer",
   "license": "MIT",
   "scripts": {
     "pbiviz": "pbiviz",

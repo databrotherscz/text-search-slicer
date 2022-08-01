@@ -102,8 +102,8 @@
             }
         }
     },
-    "supportsHighlight": false,	
     "suppressDefaultTitle": true,	
+    "supportsHighlight": false,	
     "supportsSynchronizingFilterState": true,	
     "supportsLandingPage": true,
     "supportsEmptyDataView": true

@@ -6,4 +6,4 @@ function convertFontSize(value: number): string | null {
 
 export {
     convertFontSize
-}
+};

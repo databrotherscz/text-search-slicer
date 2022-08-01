@@ -1,12 +1,12 @@
-import { IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
+import { IFilterColumnTarget } from "powerbi-models";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import FilterService from "../services/filterService";
+import TextSearchFilterService from "../services/textSearchFilterService";
 import { VisualSettings } from "../settings";
 import powerbi from "powerbi-visuals-api";
 import "../style/TextSearchSlicer.css";
 import { CrossIcon, SearchIcon } from "./Icons";
-import { convertFontSize } from "../helpers/pbiStyle";
+import { convertFontSize } from "../helpers/utils";
 
 // -------------------- TYPES --------------------
 
@@ -24,9 +24,8 @@ interface ITextSearchSlicerState {
 
 type UpdateVisualComponent = (newState: ITextSearchSlicerState) => void;
 
-
 interface ITextSearchSlicerProps {
-    filterService: FilterService,
+    textSearchFilterService: TextSearchFilterService,
 }
 
 // -------------------- IMPLEMENTATION --------------------
@@ -43,9 +42,9 @@ const initialState: ITextSearchSlicerState = {
     // index of selected column
     currentTargetIndex: 0,
 
-    // applied filter's value 
+    // value of applied filter 
     currentFilterValue: null,
-    // applied filter's column index
+    // target index of applied filter
     currentFilterTargetIndex: null
 };
 
@@ -59,7 +58,7 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
             setState(prevState => ({
                 ...prevState,
                 ...newState,
-                // set index if it is present in newState otherwise check if previous index is in bound and possibly set to 0
+                // set selected target index if it is present in newState otherwise check if previous index is in bound and possibly set to 0
                 currentTargetIndex: (newState.currentTargetIndex === null || newState.currentTargetIndex === undefined) ?
                     (((newState.targets === null || newState.targets === undefined) || (prevState.currentTargetIndex <= newState.targets.length - 1)) ? prevState.currentTargetIndex : 0)
                     :
@@ -88,7 +87,7 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
             ...state,
             inputText: ""
         });
-        props.filterService.clearFilter();
+        props.textSearchFilterService.clearFilter();
     };
 
     const onTextInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -119,10 +118,10 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         const targetIndex = newTargetIndex === null ? state.currentTargetIndex : newTargetIndex;
 
         if (state.inputText) {
-            props.filterService.setFilter(state.inputText, state.targets[targetIndex]);
+            props.textSearchFilterService.setFilter(state.inputText, state.targets[targetIndex]);
         }
         else {
-            props.filterService.clearFilter();
+            props.textSearchFilterService.clearFilter();
         }
     };
 
@@ -175,10 +174,10 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                                     onKeyDown={onTextInputKeyDown}
                                     onBlur={onTextInputBlur} />
                                 <button className="input-button" onClick={onSearchButtonClick}>
-                                    <SearchIcon fill={state.settings?.slicerRormatting?.inputFontColor}></SearchIcon >
+                                    <SearchIcon></SearchIcon >
                                 </button>
                                 <button className="input-button" onClick={onClearButtonClick}>
-                                    <CrossIcon fill={state.settings?.slicerRormatting?.inputFontColor}></CrossIcon >
+                                    <CrossIcon></CrossIcon >
                                 </button>
                             </div>
 
@@ -206,7 +205,7 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
         ) : (
             null
         )
-    )
+    );
 }
 
 export default TextSearchSlicer;

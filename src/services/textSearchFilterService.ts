@@ -3,7 +3,7 @@ import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { AdvancedFilter, IAdvancedFilter, IAdvancedFilterCondition, IFilterColumnTarget } from "powerbi-models";
 import FilterAction = powerbi.FilterAction;
 
-class FilterService {
+class TextSearchFilterService {
     private host: IVisualHost;
 
     constructor(host: IVisualHost) {
@@ -11,32 +11,21 @@ class FilterService {
     }
 
     public setFilter(value: string, target: IFilterColumnTarget) {       
-        if (!target) {
-            console.error("Filter target is null");  
+        if (!target || !value) {
             return;          
         }
 
-        if (!value) {
-            console.error("Value is null");   
-            return;  
-        }
-
         const conditions: IAdvancedFilterCondition[] = [];
-        if (value) {
-            conditions.push({
-                operator: "Contains",
-                value: value
-            });
-        }
+        conditions.push({
+            operator: "Contains",
+            value: value
+        });
         
         const filter : IAdvancedFilter = {
             $schema: "http://powerbi.com/product/schema#advanced",
             ...(new AdvancedFilter(target, "And", conditions))
         };
 
-        console.log("Filter applied", filter);
-        
-        
         this.host.applyJsonFilter(
             filter,
             "general",
@@ -55,4 +44,4 @@ class FilterService {
     }
 }
 
-export default FilterService;
+export default TextSearchFilterService;
