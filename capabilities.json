@@ -34,7 +34,7 @@
                 }
             }
         },
-        "slicerRormatting": {
+        "slicerFormatting": {
             "displayName": "Slicer formatting",
             "properties": {
                 "fontSize": {
@@ -88,13 +88,13 @@
                     }
                 },
                 "placeholderString": {
-                    "displayName": "Placeholder",
+                    "displayName": "Input placeholder",
                     "type": {   
                         "text": true
                     }
                 },
                 "notSelectedString": {
-                    "displayName": "No fields selected",
+                    "displayName": "No fields selected text",
                     "type": {   
                         "text": true
                     }

@@ -1,3 +1,11 @@
+*:focus {
+    outline: 1px solid transparent;
+}
+
+.visual-container {
+    margin: 5px 5px 0 5px;
+}
+
 .input-field {
     font-family: inherit;
     color: inherit;
@@ -15,10 +23,6 @@
     padding: 0 5px;
     width: fit-content;
     text-align: center;
-}
-
-*:focus {
-    outline: 1px solid transparent;
 }
 
 .input-button:hover {
@@ -51,10 +55,10 @@
     background: #eeeeee;
 }
 
-.target-button__active {
-    background: #bbbbbb;
-}
-
 .target-button:hover {
     background: #d1d1d1;
+}
+
+.target-button__active {
+    background: #bbbbbb;
 }

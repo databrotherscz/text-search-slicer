@@ -27,7 +27,7 @@
 "use strict";
 
 import powerbi from "powerbi-visuals-api";
-import VisualComponent, { updateVisualComponentState, ITextSearchSlicerState } from "./components/TextSearchSlicer";
+import TextSearchSlicer, { ITextSearchSlicerState } from "./components/TextSearchSlicer";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
@@ -46,7 +46,7 @@ import { IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
 class Visual implements IVisual {
     private target: HTMLElement;
     private settings: VisualSettings;
-    private reactRoot: React.FunctionComponentElement<any>;
+    private reactRoot: React.ComponentElement<any, any>;
     private selectionManager: ISelectionManager;
     private eventService: IVisualEventService;
 
@@ -56,7 +56,7 @@ class Visual implements IVisual {
         this.target = options.element;
         this.registerContextMenuHandler();
         
-        this.reactRoot = React.createElement(VisualComponent, {
+        this.reactRoot = React.createElement(TextSearchSlicer, {
             textSearchFilterService: new TextSearchFilterService(options.host)
         });
         ReactDOM.render(this.reactRoot, this.target);
@@ -66,65 +66,46 @@ class Visual implements IVisual {
         this.eventService.renderingStarted(options);
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         
-        this.tryUpdateVisualComponentState(options);
-        // TODO: eventservice finished
+        let newState = this.getUpdatedVisualState(options);
+        TextSearchSlicer.update(newState);
+
+        this.eventService.renderingFinished(options);
     }
 
     private getUpdatedVisualState(options: VisualUpdateOptions): ITextSearchSlicerState {
-        const updateType = options.type.valueOf();
-        
+        const categories = options.dataViews[0].categorical?.categories;
+        const filter = options.jsonFilters && options.jsonFilters[0] as IAdvancedFilter;
+        const currentFilterValue = filter && filter.conditions[0].value?.toString() || "";
+        const currentFilterTarget = filter && filter.target as IFilterColumnTarget;
+
         let newState: ITextSearchSlicerState = {
             isLoaded: true,
             height: this.calculateVisualSize(options.viewport.height, 2, 5),
             width: this.calculateVisualSize(options.viewport.width, 2, 10),
-            settings: this.settings
+            settings: this.settings,
+            currentFilterValue: currentFilterValue,
+            inputText: currentFilterValue,
+            targets: []
         };
-
-        if (updateType === 254 || updateType === 2 || updateType === 62) {
-            const categories = options.dataViews[0].categorical?.categories;
-            const filter = options.jsonFilters && options.jsonFilters[0] as IAdvancedFilter;
-            const currentFilterValue = filter && filter.conditions[0].value?.toString() || "";
-            const currentFilterTarget = filter && filter.target as IFilterColumnTarget;
             
-            newState.currentFilterValue = currentFilterValue;
-            if (currentFilterValue) {
-                newState.inputText = currentFilterValue;
-            }
-            newState.targets = [];
-            
-            if (categories) {
-                for (let i = 0; i < categories.length; i++) {
-                    const category = categories[i];
-                    const target = {
-                        table: category.source.queryName.substring(0, category.source.queryName.indexOf(".")),
-                        column: category.source.displayName,
-                    };
-                    newState.targets.push(target);
+        if (categories) {
+            for (let i = 0; i < categories.length; i++) {
+                const category = categories[i];
+                const target = {
+                    table: category.source.queryName.substring(0, category.source.queryName.indexOf(".")),
+                    column: category.source.displayName,
+                };
+                newState.targets.push(target);
 
-                    if (currentFilterTarget && currentFilterTarget.table === target.table && currentFilterTarget.column === target.column) {
-                        newState.currentFilterTargetIndex = i;
-                        newState.currentTargetIndex = i;
-                    }
+                // if iterated target is currently fi
+                if (currentFilterTarget && currentFilterTarget.table === target.table && currentFilterTarget.column === target.column) {
+                    newState.currentFilterTargetIndex = i;
+                    newState.currentTargetIndex = i;
                 }
             }
         }
 
         return newState;
-    }
-
-    // TODO: refactor
-    private tryUpdateVisualComponentState(options: VisualUpdateOptions) {        
-        let newState = this.getUpdatedVisualState(options);
-
-        const updateFunction = () => updateVisualComponentState(newState);
-        if (updateVisualComponentState) {
-            updateFunction();
-        }
-        // if update function was not called, try again with delay 
-        // workaround - visual.update is slightly faster than mounting root component
-        else {
-            setTimeout(updateFunction, 100);
-        }
     }
 
     private registerContextMenuHandler() {

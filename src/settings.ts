@@ -30,10 +30,10 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 class VisualSettings extends DataViewObjectsParser {
-    public slicerRormatting: slicerFormattingSettings = new slicerFormattingSettings();
+    public slicerFormatting: SlicerFormattingSettings = new SlicerFormattingSettings();
 }
 
-class slicerFormattingSettings {
+class SlicerFormattingSettings {
     public inputFontColor: string = "#333333";
     public placeholderFontColor: string = "#b3b3b3";
     public fontSize: number = 8;
@@ -46,5 +46,5 @@ class slicerFormattingSettings {
 
 export {
     VisualSettings,
-    slicerFormattingSettings
+    SlicerFormattingSettings
 };

@@ -1,12 +1,10 @@
 import { IFilterColumnTarget } from "powerbi-models";
 import * as React from "react";
-import { useEffect, useState } from "react";
 import TextSearchFilterService from "../services/textSearchFilterService";
 import { VisualSettings } from "../settings";
-import powerbi from "powerbi-visuals-api";
 import "../style/TextSearchSlicer.css";
 import { CrossIcon, SearchIcon } from "./Icons";
-import { convertFontSize } from "../helpers/utils";
+import { convertFontSize, convertPadding } from "../helpers/utils";
 
 // -------------------- TYPES --------------------
 
@@ -48,14 +46,32 @@ const initialState: ITextSearchSlicerState = {
     currentFilterTargetIndex: null
 };
 
-let updateVisualComponentState: UpdateVisualComponent = null;
 
-function TextSearchSlicer(props: ITextSearchSlicerProps) {
-    const [state, setState] = useState(initialState);
+class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSearchSlicerState> {
+    private static updateCallback: UpdateVisualComponent = null;
 
-    useEffect(() => {
-        updateVisualComponentState = (newState) => {
-            setState(prevState => ({
+    public static update(newState: ITextSearchSlicerState) {
+        if (typeof TextSearchSlicer.updateCallback === 'function') {
+            TextSearchSlicer.updateCallback(newState);
+        }
+    }
+
+    constructor(props: ITextSearchSlicerProps) {
+        super(props);
+        this.state = initialState;
+
+        this.onTextInputChange = this.onTextInputChange.bind(this);
+        this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
+        this.onClearButtonClick = this.onClearButtonClick.bind(this);
+        this.onTextInputKeyDown = this.onTextInputKeyDown.bind(this);
+        this.onTextInputBlur = this.onTextInputBlur.bind(this);
+        this.onTargetButtonClick = this.onTargetButtonClick.bind(this);
+        this.applyFilter = this.applyFilter.bind(this);
+    }
+
+    public componentWillMount() {
+        TextSearchSlicer.updateCallback = (newState: ITextSearchSlicerState): void => {
+            this.setState(prevState => ({
                 ...prevState,
                 ...newState,
                 // set selected target index if it is present in newState otherwise check if previous index is in bound and possibly set to 0
@@ -65,151 +81,149 @@ function TextSearchSlicer(props: ITextSearchSlicerProps) {
                     newState.currentTargetIndex
             }));
         };
+    }
 
-        return () => {
-            updateVisualComponentState = null;
-        };
-    }, []);
+    public componentWillUnmount() {
+        TextSearchSlicer.updateCallback = null;
+    }
 
-    const onTextInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState({
-            ...state,
+    private onTextInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
             inputText: e.target.value
         });
+    }
+
+    private onSearchButtonClick() {
+        this.applyFilter();
     };
 
-    const onSearchButtonClick = () => {
-        applyFilter();
-    };
-
-    const onClearButtonClick = () => {
-        setState({
-            ...state,
+    private onClearButtonClick() {
+        this.setState({
             inputText: ""
         });
-        props.textSearchFilterService.clearFilter();
+        this.props.textSearchFilterService.clearFilter();
     };
 
-    const onTextInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private onTextInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") {
-            applyFilter();
+            this.applyFilter();
         }
     };
 
-    const onTextInputBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    private onTextInputBlur(e: React.FocusEvent<HTMLInputElement, Element>) {
         if (!e.relatedTarget || (!e.relatedTarget.classList.contains("input-button") && !e.relatedTarget.classList.contains("target-button"))) {
-            setState({
-                ...state,
-                inputText: state.currentFilterValue || ""
-            });
+            this.setState(prevState => ({
+                inputText: prevState.currentFilterValue || ""
+            }));
         }
     };
 
-    const onTargetButtonClick = (selectedIndex: number) => {
-        setState({
-            ...state,
+    private onTargetButtonClick(selectedIndex: number) {
+        this.setState({
             currentTargetIndex: selectedIndex
         });
 
-        applyFilter(selectedIndex);
+        this.applyFilter(selectedIndex);
     };
 
-    const applyFilter = (newTargetIndex: number = null) => {
-        const targetIndex = newTargetIndex === null ? state.currentTargetIndex : newTargetIndex;
+    private applyFilter(newTargetIndex: number = null) {
+        const targetIndex = newTargetIndex === null ? this.state.currentTargetIndex : newTargetIndex;
 
-        if (state.inputText) {
-            props.textSearchFilterService.setFilter(state.inputText, state.targets[targetIndex]);
+        if (this.state.inputText) {
+            this.props.textSearchFilterService.setFilter(this.state.inputText, this.state.targets[targetIndex]);
         }
         else {
-            props.textSearchFilterService.clearFilter();
+            this.props.textSearchFilterService.clearFilter();
         }
     };
 
-    const visualContainerStyle: React.CSSProperties = {
-        width: state.width,
-        height: state.height,
-        fontFamily: state.settings?.slicerRormatting?.fontFamily,
-        color: state.settings?.slicerRormatting?.inputFontColor,
-        fontSize: convertFontSize(state.settings?.slicerRormatting?.fontSize),
-        margin: "5px 5px 0 5px"
-    };
+    render() {
+        const visualContainerStyle: React.CSSProperties = {
+            width: this.state.width,
+            height: this.state.height,
+            fontFamily: this.state.settings?.slicerFormatting?.fontFamily,
+            color: this.state.settings?.slicerFormatting?.inputFontColor,
+            fontSize: convertFontSize(this.state.settings?.slicerFormatting?.fontSize)
+        };
 
-    const inputFieldStyle: React.CSSProperties = {
-        paddingTop: `${state.settings?.slicerRormatting?.padding + 1}px`,
-        paddingLeft: `${state.settings?.slicerRormatting?.padding + 1}px`,
-        paddingRight: `${state.settings?.slicerRormatting?.padding + 1}px`,
-        paddingBottom: `${state.settings?.slicerRormatting?.padding - 1}px`
-    };
+        const inputFieldStyle: React.CSSProperties = {
+            paddingTop: convertPadding(this.state.settings?.slicerFormatting?.padding + 1),
+            paddingLeft: convertPadding(this.state.settings?.slicerFormatting?.padding + 1),
+            paddingRight: convertPadding(this.state.settings?.slicerFormatting?.padding + 1),
+            paddingBottom: convertPadding(this.state.settings?.slicerFormatting?.padding - 1)
+        };
+    
+        const inputPlaceholderCss = `
+            ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                color: ${this.state.settings?.slicerFormatting?.placeholderFontColor};
+                opacity: 1; /* Firefox */
+            }
+    
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: ${this.state.settings?.slicerFormatting?.placeholderFontColor};
+            }
+    
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: ${this.state.settings?.slicerFormatting?.placeholderFontColor};
+            }
+        `;
 
-    const placeholderCss = `
-        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-            color: ${state.settings?.slicerRormatting?.placeholderFontColor};
-            opacity: 1; /* Firefox */
-        }
-
-        :-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: ${state.settings?.slicerRormatting?.placeholderFontColor};
-        }
-
-        ::-ms-input-placeholder { /* Microsoft Edge */
-            color: ${state.settings?.slicerRormatting?.placeholderFontColor};
-        }
-    `;
-
-    return (
-        state.isLoaded ? (
-            <div style={visualContainerStyle}>
-                {
-                    (state.targets && state.targets.length > 0) ? (
-                        <>
-                            <style> {placeholderCss} </style>
-                            <div className="input-container" style={{ background: state.settings?.slicerRormatting?.fill }}>
-                                <input
-                                    className="input-field"
-                                    style={inputFieldStyle}
-                                    placeholder={state.settings?.slicerRormatting?.placeholderString}
-                                    type="text"
-                                    value={state.inputText}
-                                    onChange={onTextInputChange}
-                                    onKeyDown={onTextInputKeyDown}
-                                    onBlur={onTextInputBlur} />
-                                <button className="input-button" onClick={onSearchButtonClick}>
-                                    <SearchIcon></SearchIcon >
-                                </button>
-                                <button className="input-button" onClick={onClearButtonClick}>
-                                    <CrossIcon></CrossIcon >
-                                </button>
+        return(
+            this.state.isLoaded? (
+                <div className="visual-container" style={visualContainerStyle}>
+                    {
+                        (this.state.targets && this.state.targets.length > 0) ? (
+                            <>
+                                <style> {inputPlaceholderCss} </style>
+                                <div className="input-container" style={{ background: this.state.settings?.slicerFormatting?.fill }}>
+                                    <input
+                                        className="input-field"
+                                        style={inputFieldStyle}
+                                        placeholder={this.state.settings?.slicerFormatting?.placeholderString}
+                                        type="text"
+                                        value={this.state.inputText}
+                                        onChange={this.onTextInputChange}
+                                        onKeyDown={this.onTextInputKeyDown}
+                                        onBlur={this.onTextInputBlur} />
+                                    <button className="input-button" onClick={this.onSearchButtonClick}>
+                                        <SearchIcon></SearchIcon >
+                                    </button>
+                                    <button className="input-button" onClick={this.onClearButtonClick}>
+                                        <CrossIcon></CrossIcon >
+                                    </button>
+                                </div>
+    
+                                {
+                                    (this.state.targets.length > 1) ? (
+                                        <div className="target-container">
+                                            {this.state.targets.map((target, targetIndex) => (
+                                                <button className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
+                                                    {target.column}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        null
+                                    )
+                                }
+                            </>
+                        ) : (
+                            <div>
+                                {this.state.settings?.slicerFormatting?.notSelectedString}
                             </div>
+                        )
+                    }
+                </div>
+            ) : (
+                null
+            )
+        );
+    }
 
-                            {
-                                (state.targets.length > 1) ? (
-                                    <div className="target-container">
-                                        {state.targets.map((target, targetIndex) => (
-                                            <button className={`target-button ${state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => onTargetButtonClick(targetIndex)}>
-                                                {target.column}
-                                            </button>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    null
-                                )
-                            }
-                        </>
-                    ) : (
-                        <div>
-                            {state.settings?.slicerRormatting?.notSelectedString}
-                        </div>
-                    )
-                }
-            </div>
-        ) : (
-            null
-        )
-    );
+
 }
 
 export default TextSearchSlicer;
 export {
-    updateVisualComponentState,
     ITextSearchSlicerState
 };
