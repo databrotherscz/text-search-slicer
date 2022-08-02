@@ -138,57 +138,70 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
     };
 
     render() {
-        const visualContainerStyle: React.CSSProperties = {
-            width: this.state.width,
-            height: this.state.height,
-            fontFamily: this.state.settings?.slicerFormatting?.fontFamily,
-            color: this.state.settings?.slicerFormatting?.inputFontColor,
-            fontSize: convertFontSize(this.state.settings?.slicerFormatting?.fontSize)
+        const inputFieldStyle: React.CSSProperties = {
+            paddingTop: convertPadding(this.state.settings?.inputFormatting?.padding + 1),
+            paddingLeft: convertPadding(this.state.settings?.inputFormatting?.padding + 1),
+            paddingRight: convertPadding(this.state.settings?.inputFormatting?.padding + 1),
+            paddingBottom: convertPadding(this.state.settings?.inputFormatting?.padding - 1)
         };
 
-        const inputFieldStyle: React.CSSProperties = {
-            paddingTop: convertPadding(this.state.settings?.slicerFormatting?.padding + 1),
-            paddingLeft: convertPadding(this.state.settings?.slicerFormatting?.padding + 1),
-            paddingRight: convertPadding(this.state.settings?.slicerFormatting?.padding + 1),
-            paddingBottom: convertPadding(this.state.settings?.slicerFormatting?.padding - 1)
+        const inputContainerStyle: React.CSSProperties = {
+            background: this.state.settings?.inputFormatting?.backgroundColor,
+            borderWidth: this.state.settings?.inputFormatting?.borderThickness,
+            borderColor: this.state.settings?.inputFormatting?.borderColor,
+            borderRadius: this.state.settings?.inputFormatting?.borderRadius
+        };
+
+        const inputButtonStyle: React.CSSProperties = {
+            borderRadius: this.state.settings?.inputFormatting?.borderRadius - this.state.settings?.inputFormatting?.borderThickness
+        };
+
+        const targetButtonStyle: React.CSSProperties = {
+            borderRadius: this.state.settings?.targetFormatting?.borderRadius,
+            color: this.state.settings?.targetFormatting?.fontColor,
+
+            paddingTop: convertPadding(this.state.settings?.targetFormatting?.padding),
+            paddingLeft: convertPadding(this.state.settings?.targetFormatting?.padding + 5),
+            paddingRight: convertPadding(this.state.settings?.targetFormatting?.padding + 5),
+            paddingBottom: convertPadding(this.state.settings?.targetFormatting?.padding),
         };
     
-        const inputPlaceholderCss = `
-            ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-                color: ${this.state.settings?.slicerFormatting?.placeholderFontColor};
-                opacity: 1; /* Firefox */
+        const bodyCss = `
+            :root {
+                --visualHeight: ${this.state.height};
+                --visualWidth: ${this.state.width};
+                --primaryFontFamily: ${this.state.settings?.generalFormatting?.fontFamily};
+                --inputFieldFontColor: ${this.state.settings?.inputFormatting?.fontColor};
+                
+                --fontSize: ${convertFontSize(this.state.settings?.generalFormatting?.fontSize)};
+                --placeholderFontColor: ${this.state.settings?.inputFormatting?.placeholderFontColor};
+
+                --testColVar2: ${this.state.settings?.targetFormatting?.hoverBackgroundColor};
             }
-    
-            :-ms-input-placeholder { /* Internet Explorer 10-11 */
-                color: ${this.state.settings?.slicerFormatting?.placeholderFontColor};
-            }
-    
-            ::-ms-input-placeholder { /* Microsoft Edge */
-                color: ${this.state.settings?.slicerFormatting?.placeholderFontColor};
-            }
+
         `;
 
         return(
             this.state.isLoaded? (
-                <div className="visual-container" style={visualContainerStyle}>
+                <div className="visual-container">
                     {
                         (this.state.targets && this.state.targets.length > 0) ? (
                             <>
-                                <style> {inputPlaceholderCss} </style>
-                                <div className="input-container" style={{ background: this.state.settings?.slicerFormatting?.fill }}>
+                                <style> {bodyCss} </style>
+                                <div className="input-container" style={inputContainerStyle}>
                                     <input
                                         className="input-field"
                                         style={inputFieldStyle}
-                                        placeholder={this.state.settings?.slicerFormatting?.placeholderString}
+                                        placeholder={this.state.settings?.inputFormatting?.placeholderString}
                                         type="text"
                                         value={this.state.inputText}
                                         onChange={this.onTextInputChange}
                                         onKeyDown={this.onTextInputKeyDown}
                                         onBlur={this.onTextInputBlur} />
-                                    <button className="input-button" onClick={this.onSearchButtonClick}>
+                                    <button className="input-button" style={inputButtonStyle} onClick={this.onSearchButtonClick}>
                                         <SearchIcon></SearchIcon >
                                     </button>
-                                    <button className="input-button" onClick={this.onClearButtonClick}>
+                                    <button className="input-button" style={inputButtonStyle} onClick={this.onClearButtonClick}>
                                         <CrossIcon></CrossIcon >
                                     </button>
                                 </div>
@@ -197,7 +210,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                                     (this.state.targets.length > 1) ? (
                                         <div className="target-container">
                                             {this.state.targets.map((target, targetIndex) => (
-                                                <button className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
+                                                <button style={targetButtonStyle} className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
                                                     {target.column}
                                                 </button>
                                             ))}
@@ -209,7 +222,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                             </>
                         ) : (
                             <div>
-                                {this.state.settings?.slicerFormatting?.notSelectedString}
+                                {this.state.settings?.generalFormatting?.notSelectedString}
                             </div>
                         )
                     }

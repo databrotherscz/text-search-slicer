@@ -30,21 +30,39 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 class VisualSettings extends DataViewObjectsParser {
-    public slicerFormatting: SlicerFormattingSettings = new SlicerFormattingSettings();
+    public generalFormatting: GeneralFormatting = new GeneralFormatting();
+    public inputFormatting: InputFormatting = new InputFormatting();
+    public targetFormatting: TargetFormatting = new TargetFormatting();
 }
 
-class SlicerFormattingSettings {
-    public inputFontColor: string = "#333333";
-    public placeholderFontColor: string = "#b3b3b3";
+class GeneralFormatting {
     public fontSize: number = 8;
     public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-    public fill: string = "#ffffff";
-    public padding: number = 4;
-    public placeholderString: string = "Search";
     public notSelectedString: string = "No fields selected";
+}
+
+class InputFormatting {
+    public fontColor: string = "#333333";
+    public backgroundColor: string = "#ffffff";
+    public padding: number = 4;
+    public borderColor: string = "#eaeaea";
+    public borderThickness: number = 1;
+    public borderRadius: number = 0;
+    public placeholderFontColor: string = "#b3b3b3";
+    public placeholderString: string = "Search";
+}
+
+class TargetFormatting {
+    public fontColor: string = "#1d1d1b"; // xxx 
+    public backgroundColor: string = "#eeeeee"; // xxx
+    public hoverFontColor: string = "#1d1d1b"; // xxx
+    public hoverBackgroundColor: string = "#d1d1d1"; // xxx
+    public activeFontColor: string = "#1d1d1b"; // xxx
+    public activeBackgroundColor: string = "#bbbbbb"; // xxx
+    public padding: number = 4; // xxx
+    public borderRadius: number = 0; // xxx
 }
 
 export {
     VisualSettings,
-    SlicerFormattingSettings
 };

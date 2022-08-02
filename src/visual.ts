@@ -97,7 +97,7 @@ class Visual implements IVisual {
                 };
                 newState.targets.push(target);
 
-                // if iterated target is currently fi
+                // if iterated target is currently filtred
                 if (currentFilterTarget && currentFilterTarget.table === target.table && currentFilterTarget.column === target.column) {
                     newState.currentFilterTargetIndex = i;
                     newState.currentTargetIndex = i;
@@ -129,7 +129,9 @@ class Visual implements IVisual {
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
-        return <VisualSettings>VisualSettings.parse(dataView);
+        let settings = <VisualSettings>VisualSettings.parse(dataView);
+        
+        return settings;
     }
 
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {

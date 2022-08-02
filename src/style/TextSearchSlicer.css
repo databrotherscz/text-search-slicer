@@ -4,20 +4,36 @@
 
 .visual-container {
     margin: 5px 5px 0 5px;
+    width: var(--visualWidth);
+    height: var(--visualHeight);
+    font-family: var(--primaryFontFamily);
+    color: var(--inputFieldFontColor);
+    font-size: var(--fontSize);
+}
+
+.input-container {
+    border-style: solid;
+    display: flex;
+    width: 100%;
+    align-items: stretch;
 }
 
 .input-field {
     font-family: inherit;
-    color: inherit;
+    color: var(--inputFieldFontColor);
     font-size: inherit;
     background: transparent;
-
     border: none;
     width: 100%;
 }
 
 .input-button {
-    border: none;
+    display: block;
+    /* box-sizing: border-box; */
+    width: 100%;
+    margin: -0.5px 0 0 0;
+
+    border: 0px;
     background: transparent;
     font-size: inherit;
     padding: 0 5px;
@@ -33,12 +49,6 @@
     background: #d1d1d1;
 }
 
-.input-container {
-    border: 1px solid #eaeaea;
-    display: flex;
-    width: 100%;
-}
-
 .target-container {
     margin: 2px 0 0 0 ;
     display: flex;
@@ -47,18 +57,29 @@
 
 .target-button {
     font-family: inherit;
-    color: #1d1d1b;
     padding: 3px 9px;
     font-size: 0.9em;  
     border: none;
-
-    background: #eeeeee;
+    background: var(--testColVar1);
 }
 
 .target-button:hover {
-    background: #d1d1d1;
+    background: var(--testColVar2);
 }
 
 .target-button__active {
     background: #bbbbbb;
+}
+
+::placeholder {
+    color: var(--placeholderFontColor);
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+    color: var(--placeholderFontColor);
+}
+
+::-ms-input-placeholder {
+    color: var(--placeholderFontColor);
 }

@@ -34,13 +34,15 @@
                 }
             }
         },
-        "slicerFormatting": {
-            "displayName": "Slicer formatting",
+        "generalFormatting": {
+            "displayName": "General",
             "properties": {
                 "fontSize": {
                     "displayName": "Font size",
                     "type": {
-                        "numeric": true
+                        "formatting": {
+                            "fontSize": true
+                        }
                     }
                 },
                 "fontFamily": {
@@ -51,8 +53,19 @@
                         }
                     }
                 },
-                "inputFontColor": {
-                    "displayName": "Input font color",
+                "notSelectedString": {
+                    "displayName": "No fields selected string",
+                    "type": {   
+                        "text": true
+                    }
+                }
+            }
+        },
+        "inputFormatting": {
+            "displayName": "Input field",
+            "properties": {
+                "fontColor": {
+                    "displayName": "Font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -61,8 +74,8 @@
                         }
                     }
                 },
-                "placeholderFontColor": {
-                    "displayName": "Placeholder font color",
+                "backgroundColor": {
+                    "displayName": "Background color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -77,8 +90,30 @@
                         "numeric": true
                     }
                 },
-                "fill": {
-                    "displayName": "Fill",
+                "borderColor": {
+                    "displayName": "Border color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "borderThickness": {
+                    "displayName": "Border thickness",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "borderRadius": {
+                    "displayName": "Border radius",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "placeholderFontColor": {
+                    "displayName": "Placeholder font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -88,15 +123,86 @@
                     }
                 },
                 "placeholderString": {
-                    "displayName": "Input placeholder",
+                    "displayName": "Placeholder string",
                     "type": {   
                         "text": true
                     }
-                },
-                "notSelectedString": {
-                    "displayName": "No fields selected text",
+                }
+            }
+        },
+        "targetFormatting": {
+            "displayName": "Field selection",
+            "properties": {
+                "fontColor": {
+                    "displayName": "Font color",
                     "type": {   
-                        "text": true
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "backgroundColor": {
+                    "displayName": "Background color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "hoverFontColor": {
+                    "displayName": "Hover font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "hoverBackgroundColor": {
+                    "displayName": "Hover background color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "activeFontColor": {
+                    "displayName": "Active font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "activeBackgroundColor": {
+                    "displayName": "Active background color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "padding": {
+                    "displayName": "Padding",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "borderRadius": {
+                    "displayName": "Border radius",
+                    "type": {
+                        "numeric": true
                     }
                 }
             }
