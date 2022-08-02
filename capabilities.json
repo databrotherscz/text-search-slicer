@@ -52,12 +52,6 @@
                             "fontFamily": true
                         }
                     }
-                },
-                "notSelectedString": {
-                    "displayName": "No fields selected string",
-                    "type": {   
-                        "text": true
-                    }
                 }
             }
         },
@@ -126,6 +120,77 @@
                     "displayName": "Placeholder string",
                     "type": {   
                         "text": true
+                    }
+                }
+            }
+        },
+        "inputActionFormatting": {
+            "displayName": "Input field action",
+            "properties": {
+                "fontColor": {
+                    "displayName": "Font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "backgroundColor": {
+                    "displayName": "Background color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "hoverFontColor": {
+                    "displayName": "Hover font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "hoverBackgroundColor": {
+                    "displayName": "Hover background color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "activeFontColor": {
+                    "displayName": "Active font color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "activeBackgroundColor": {
+                    "displayName": "Active background color",
+                    "type": {   
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "borderRadius": {
+                    "displayName": "Border radius",
+                    "type": {
+                        "numeric": true
                     }
                 }
             }

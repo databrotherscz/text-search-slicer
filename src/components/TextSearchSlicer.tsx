@@ -3,8 +3,8 @@ import * as React from "react";
 import TextSearchFilterService from "../services/textSearchFilterService";
 import { VisualSettings } from "../settings";
 import "../style/TextSearchSlicer.css";
-import { CrossIcon, SearchIcon } from "./Icons";
-import { convertFontSize, convertPadding } from "../helpers/utils";
+import { CrossIcon, SearchIcon } from "./InputButtonIcons";
+import NoFieldsPlaceholder from "./NoFieldsPlaceholder";
 
 // -------------------- TYPES --------------------
 
@@ -137,48 +137,64 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
         }
     };
 
+    private getInputFieldPadding(padding: number): string {
+        return `${padding + 1}px ${padding + 1}px ${padding - 1}px ${padding + 1}px`;
+    }
+
+    private getTargetButtonPadding(padding: number): string {
+        return `${padding}px ${padding + 5}px ${padding}px ${padding + 5}px`;
+    }
+
+    // PBI font size formatting is not in pure CSS px units, need to convert
+    private getPbiFontSize(value: number): string {
+        return  `${value * (4/3)}px`;
+    }
+
     render() {
-        const inputFieldStyle: React.CSSProperties = {
-            paddingTop: convertPadding(this.state.settings?.inputFormatting?.padding + 1),
-            paddingLeft: convertPadding(this.state.settings?.inputFormatting?.padding + 1),
-            paddingRight: convertPadding(this.state.settings?.inputFormatting?.padding + 1),
-            paddingBottom: convertPadding(this.state.settings?.inputFormatting?.padding - 1)
-        };
-
-        const inputContainerStyle: React.CSSProperties = {
-            background: this.state.settings?.inputFormatting?.backgroundColor,
-            borderWidth: this.state.settings?.inputFormatting?.borderThickness,
-            borderColor: this.state.settings?.inputFormatting?.borderColor,
-            borderRadius: this.state.settings?.inputFormatting?.borderRadius
-        };
-
         const inputButtonStyle: React.CSSProperties = {
             borderRadius: this.state.settings?.inputFormatting?.borderRadius - this.state.settings?.inputFormatting?.borderThickness
-        };
-
-        const targetButtonStyle: React.CSSProperties = {
-            borderRadius: this.state.settings?.targetFormatting?.borderRadius,
-            color: this.state.settings?.targetFormatting?.fontColor,
-
-            paddingTop: convertPadding(this.state.settings?.targetFormatting?.padding),
-            paddingLeft: convertPadding(this.state.settings?.targetFormatting?.padding + 5),
-            paddingRight: convertPadding(this.state.settings?.targetFormatting?.padding + 5),
-            paddingBottom: convertPadding(this.state.settings?.targetFormatting?.padding),
         };
     
         const bodyCss = `
             :root {
-                --visualHeight: ${this.state.height};
-                --visualWidth: ${this.state.width};
-                --primaryFontFamily: ${this.state.settings?.generalFormatting?.fontFamily};
-                --inputFieldFontColor: ${this.state.settings?.inputFormatting?.fontColor};
+                --visualHeight: ${this.state.height}px;
+                --visualWidth: ${this.state.width}px;
+                --fontFamily: ${this.state.settings?.generalFormatting?.fontFamily};
+                --fontSize: ${this.getPbiFontSize(this.state.settings?.generalFormatting?.fontSize)};
                 
-                --fontSize: ${convertFontSize(this.state.settings?.generalFormatting?.fontSize)};
+                --inputFieldFontColor: ${this.state.settings?.inputFormatting?.fontColor};
+                --inputFieldBackgroundColor: ${this.state.settings?.inputFormatting?.backgroundColor};
+                --inputFieldPadding: ${this.getInputFieldPadding(this.state.settings?.inputFormatting?.padding)};
+                --inputFieldBorderColor: ${this.state.settings?.inputFormatting?.borderColor};
+                --inputFieldBorderThickness: ${this.state.settings?.inputFormatting?.borderThickness}px;
+                --inputFieldBorderRadius: ${this.state.settings?.inputFormatting?.borderRadius}px;
+                
                 --placeholderFontColor: ${this.state.settings?.inputFormatting?.placeholderFontColor};
 
-                --testColVar2: ${this.state.settings?.targetFormatting?.hoverBackgroundColor};
-            }
+                --inputActionFontColor: ${this.state.settings?.inputActionFormatting?.fontColor};
+                --inputActionBackgroundColor: ${this.state.settings?.inputActionFormatting?.backgroundColor};
 
+                --inputActionHoverFontColor: ${this.state.settings?.inputActionFormatting?.hoverFontColor};
+                --inputActionHoverBackgroundColor: ${this.state.settings?.inputActionFormatting?.hoverBackgroundColor};
+
+                --inputActionActiveFontColor: ${this.state.settings?.inputActionFormatting?.activeFontColor};
+                --inputActionActiveBackgroundColor: ${this.state.settings?.inputActionFormatting?.activeBackgroundColor};
+                
+                --inputActionBorderRadius: ${this.state.settings?.inputActionFormatting?.borderRadius}px;
+
+
+                --targetButtonBorderRadius: ${this.state.settings?.targetFormatting?.borderRadius}px;
+                --targetButtonPadding: ${this.getTargetButtonPadding(this.state.settings?.targetFormatting?.padding)};
+                
+                --targetButtonFontColor: ${this.state.settings?.targetFormatting?.fontColor};
+                --targetButtonBackgroundColor: ${this.state.settings?.targetFormatting?.backgroundColor};
+
+                --targetButtonHoverFontColor: ${this.state.settings?.targetFormatting?.hoverFontColor};
+                --targetButtonHoverBackgroundColor: ${this.state.settings?.targetFormatting?.hoverBackgroundColor};
+
+                --targetButtonActiveFontColor: ${this.state.settings?.targetFormatting?.activeFontColor};
+                --targetButtonActiveBackgroundColor: ${this.state.settings?.targetFormatting?.activeBackgroundColor};
+            }
         `;
 
         return(
@@ -188,10 +204,9 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                         (this.state.targets && this.state.targets.length > 0) ? (
                             <>
                                 <style> {bodyCss} </style>
-                                <div className="input-container" style={inputContainerStyle}>
+                                <div className="input-container">
                                     <input
                                         className="input-field"
-                                        style={inputFieldStyle}
                                         placeholder={this.state.settings?.inputFormatting?.placeholderString}
                                         type="text"
                                         value={this.state.inputText}
@@ -210,7 +225,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                                     (this.state.targets.length > 1) ? (
                                         <div className="target-container">
                                             {this.state.targets.map((target, targetIndex) => (
-                                                <button style={targetButtonStyle} className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
+                                                <button className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
                                                     {target.column}
                                                 </button>
                                             ))}
@@ -221,9 +236,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                                 }
                             </>
                         ) : (
-                            <div>
-                                {this.state.settings?.generalFormatting?.notSelectedString}
-                            </div>
+                            <NoFieldsPlaceholder></NoFieldsPlaceholder>
                         )
                     }
                 </div>

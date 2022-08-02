@@ -3,72 +3,92 @@
 }
 
 .visual-container {
-    margin: 5px 5px 0 5px;
     width: var(--visualWidth);
     height: var(--visualHeight);
-    font-family: var(--primaryFontFamily);
-    color: var(--inputFieldFontColor);
+    margin: 5px 5px 0 5px;
+    
+    font-family: var(--fontFamily);
     font-size: var(--fontSize);
+    color: var(--inputFieldFontColor);
 }
 
 .input-container {
-    border-style: solid;
     display: flex;
     width: 100%;
+    border-style: solid;
+    border-width: var(--inputFieldBorderThickness);
+    border-color: var(--inputFieldBorderColor);
+    border-radius: var(--inputFieldBorderRadius);
+    
+    color: var(--inputFieldFontColor);
+    background: var(--inputFieldBackgroundColor);
+    
+    
     align-items: stretch;
 }
 
 .input-field {
-    font-family: inherit;
-    color: var(--inputFieldFontColor);
-    font-size: inherit;
-    background: transparent;
-    border: none;
     width: 100%;
+    padding: var(--inputFieldPadding);
+    border: none;
+    
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--inputFieldFontColor);
+    background: transparent;
 }
 
 .input-button {
     display: block;
-    /* box-sizing: border-box; */
-    width: 100%;
-    margin: -0.5px 0 0 0;
-
-    border: 0px;
-    background: transparent;
-    font-size: inherit;
-    padding: 0 5px;
     width: fit-content;
+    margin: -0.5px 0 0 0;
+    padding: 0 5px;
+    border: 0px;
+    border-radius: var(--inputActionBorderRadius);
+    
+    font-size: inherit;
+    color: var(--inputActionFontColor);
+    background: var(--inputActionBackgroundColor);
     text-align: center;
 }
 
 .input-button:hover {
-    background: #eaeaea;
+    color: var(--inputActionHoverFontColor);
+    background: var(--inputActionHoverBackgroundColor);
 }
 
 .input-button:active {
-    background: #d1d1d1;
+    color: var(--inputActionActiveFontColor);
+    background: var(--inputActionActiveBackgroundColor);
 }
 
 .target-container {
-    margin: 2px 0 0 0 ;
     display: flex;
+    margin: 2px 0 0 0 ;
+
+    flex-wrap: wrap;
     gap: 2px;
 }
 
 .target-button {
-    font-family: inherit;
-    padding: 3px 9px;
-    font-size: 0.9em;  
+    padding: var(--targetButtonPadding);
     border: none;
-    background: var(--testColVar1);
+    border-radius: var(--targetButtonBorderRadius);
+
+    font-family: inherit;
+    font-size: 0.9em;  
+    color: var(--targetButtonFontColor);
+    background: var(--targetButtonBackgroundColor);
 }
 
 .target-button:hover {
-    background: var(--testColVar2);
+    color: var(--targetButtonHoverFontColor);
+    background: var(--targetButtonHoverBackgroundColor);
 }
 
 .target-button__active {
-    background: #bbbbbb;
+    color: var(--targetButtonActiveFontColor);
+    background: var(--targetButtonActiveBackgroundColor);    
 }
 
 ::placeholder {

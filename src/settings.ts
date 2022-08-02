@@ -32,13 +32,13 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 class VisualSettings extends DataViewObjectsParser {
     public generalFormatting: GeneralFormatting = new GeneralFormatting();
     public inputFormatting: InputFormatting = new InputFormatting();
+    public inputActionFormatting: InputActionFormatting = new InputActionFormatting();
     public targetFormatting: TargetFormatting = new TargetFormatting();
 }
 
 class GeneralFormatting {
     public fontSize: number = 8;
     public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-    public notSelectedString: string = "No fields selected";
 }
 
 class InputFormatting {
@@ -52,15 +52,25 @@ class InputFormatting {
     public placeholderString: string = "Search";
 }
 
+class InputActionFormatting {
+    public fontColor: string = "#333333"; 
+    public backgroundColor: string = "#ffffff"; 
+    public hoverFontColor: string = "#333333";
+    public hoverBackgroundColor: string = "#eaeaea"; 
+    public activeFontColor: string = "#333333"; 
+    public activeBackgroundColor: string = "#d1d1d1"; 
+    public borderRadius: number = 0; 
+}
+
 class TargetFormatting {
-    public fontColor: string = "#1d1d1b"; // xxx 
-    public backgroundColor: string = "#eeeeee"; // xxx
-    public hoverFontColor: string = "#1d1d1b"; // xxx
-    public hoverBackgroundColor: string = "#d1d1d1"; // xxx
-    public activeFontColor: string = "#1d1d1b"; // xxx
-    public activeBackgroundColor: string = "#bbbbbb"; // xxx
-    public padding: number = 4; // xxx
-    public borderRadius: number = 0; // xxx
+    public fontColor: string = "#1d1d1b";
+    public backgroundColor: string = "#eeeeee";
+    public hoverFontColor: string = "#1d1d1b";
+    public hoverBackgroundColor: string = "#d1d1d1"; 
+    public activeFontColor: string = "#1d1d1b"; 
+    public activeBackgroundColor: string = "#bbbbbb";
+    public padding: number = 4; 
+    public borderRadius: number = 0; 
 }
 
 export {
