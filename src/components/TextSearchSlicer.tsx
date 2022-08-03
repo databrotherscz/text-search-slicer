@@ -150,11 +150,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
         return  `${value * (4/3)}px`;
     }
 
-    render() {
-        const inputButtonStyle: React.CSSProperties = {
-            borderRadius: this.state.settings?.inputFormatting?.borderRadius - this.state.settings?.inputFormatting?.borderThickness
-        };
-    
+    render() {   
         const bodyCss = `
             :root {
                 --visualHeight: ${this.state.height}px;
@@ -213,10 +209,10 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                                         onChange={this.onTextInputChange}
                                         onKeyDown={this.onTextInputKeyDown}
                                         onBlur={this.onTextInputBlur} />
-                                    <button className="input-button" style={inputButtonStyle} onClick={this.onSearchButtonClick}>
+                                    <button className="input-button" onClick={this.onSearchButtonClick}>
                                         <SearchIcon></SearchIcon >
                                     </button>
-                                    <button className="input-button" style={inputButtonStyle} onClick={this.onClearButtonClick}>
+                                    <button className="input-button" onClick={this.onClearButtonClick}>
                                         <CrossIcon></CrossIcon >
                                     </button>
                                 </div>

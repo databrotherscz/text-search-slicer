@@ -80,8 +80,8 @@ class Visual implements IVisual {
 
         let newState: ITextSearchSlicerState = {
             isLoaded: true,
-            height: this.calculateVisualSize(options.viewport.height, 2, 5),
-            width: this.calculateVisualSize(options.viewport.width, 2, 10),
+            height: this.calculateVisualSize(options.viewport.height, 5),
+            width: this.calculateVisualSize(options.viewport.width, 10),
             settings: this.settings,
             currentFilterValue: currentFilterValue,
             inputText: currentFilterValue,
@@ -112,8 +112,7 @@ class Visual implements IVisual {
         this.target.addEventListener("contextmenu", e => {
             const emptySelection = {
                 "measures": [],
-                "dataMap": {
-                }
+                "dataMap": {}
             };
             this.selectionManager.showContextMenu(
                 emptySelection, {
@@ -124,14 +123,12 @@ class Visual implements IVisual {
         });
     }
 
-    private calculateVisualSize(size: number, border: number, margin: number) {
-        return size - border - margin;
+    private calculateVisualSize(size: number, margin: number) {
+        return size - margin - 2;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
-        let settings = <VisualSettings>VisualSettings.parse(dataView);
-        
-        return settings;
+        return <VisualSettings>VisualSettings.parse(dataView);
     }
 
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
