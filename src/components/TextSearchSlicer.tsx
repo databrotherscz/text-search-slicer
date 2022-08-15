@@ -1,4 +1,4 @@
-import { IFilterColumnTarget } from "powerbi-models";
+import ITextSearchSlicerTarget from "../models/ITextSearchSlicerTarget";
 import * as React from "react";
 import TextSearchFilterService from "../services/textSearchFilterService";
 import { VisualSettings } from "../settings";
@@ -14,7 +14,7 @@ interface ITextSearchSlicerState {
     height?: number,
     settings?: VisualSettings,
     inputText?: string,
-    targets?: IFilterColumnTarget[],
+    targets?: ITextSearchSlicerTarget[],
     currentTargetIndex?: number,
     currentFilterValue?: string,
     currentFilterTargetIndex?: number
@@ -168,16 +168,8 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                 --placeholderFontColor: ${this.state.settings?.inputFormatting?.placeholderFontColor};
 
                 --inputActionFontColor: ${this.state.settings?.inputActionFormatting?.fontColor};
-                --inputActionBackgroundColor: ${this.state.settings?.inputActionFormatting?.backgroundColor};
-
                 --inputActionHoverFontColor: ${this.state.settings?.inputActionFormatting?.hoverFontColor};
-                --inputActionHoverBackgroundColor: ${this.state.settings?.inputActionFormatting?.hoverBackgroundColor};
-
                 --inputActionActiveFontColor: ${this.state.settings?.inputActionFormatting?.activeFontColor};
-                --inputActionActiveBackgroundColor: ${this.state.settings?.inputActionFormatting?.activeBackgroundColor};
-                
-                --inputActionBorderRadius: ${this.state.settings?.inputActionFormatting?.borderRadius}px;
-
 
                 --targetButtonBorderRadius: ${this.state.settings?.targetFormatting?.borderRadius}px;
                 --targetButtonPadding: ${this.getTargetButtonPadding(this.state.settings?.targetFormatting?.padding)};
@@ -222,7 +214,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                                         <div className="target-container">
                                             {this.state.targets.map((target, targetIndex) => (
                                                 <button className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
-                                                    {target.column}
+                                                    {target.displayName}
                                                 </button>
                                             ))}
                                         </div>

@@ -137,28 +137,8 @@
                         }
                     }
                 },
-                "backgroundColor": {
-                    "displayName": "Background color",
-                    "type": {   
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
                 "hoverFontColor": {
                     "displayName": "Hover font color",
-                    "type": {   
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "hoverBackgroundColor": {
-                    "displayName": "Hover background color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -175,22 +155,6 @@
                                 "color": true
                             }
                         }
-                    }
-                },
-                "activeBackgroundColor": {
-                    "displayName": "Active background color",
-                    "type": {   
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "borderRadius": {
-                    "displayName": "Border radius",
-                    "type": {
-                        "numeric": true
                     }
                 }
             }

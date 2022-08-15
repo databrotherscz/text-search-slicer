@@ -63,6 +63,9 @@ class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
+        console.log(options);
+        
+
         this.eventService.renderingStarted(options);
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         
@@ -91,9 +94,11 @@ class Visual implements IVisual {
         if (categories) {
             for (let i = 0; i < categories.length; i++) {
                 const category = categories[i];
+                const queryNameSeparatorIndex = category.source.queryName.indexOf(".");
                 const target = {
-                    table: category.source.queryName.substring(0, category.source.queryName.indexOf(".")),
-                    column: category.source.displayName,
+                    table: category.source.queryName.substring(0, queryNameSeparatorIndex),
+                    column: category.source.queryName.substring(queryNameSeparatorIndex + 1),
+                    displayName: category.source.displayName
                 };
                 newState.targets.push(target);
 

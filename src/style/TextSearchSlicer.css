@@ -44,22 +44,21 @@
     margin: -0.5px 0 0 0;
     padding: 0 5px;
     border: 0px;
-    border-radius: var(--inputActionBorderRadius);
     
     font-size: inherit;
     color: var(--inputActionFontColor);
-    background: var(--inputActionBackgroundColor);
+    background: transparent;
     text-align: center;
 }
 
 .input-button:hover {
     color: var(--inputActionHoverFontColor);
-    background: var(--inputActionHoverBackgroundColor);
+    background: transparent;
 }
 
 .input-button:active {
     color: var(--inputActionActiveFontColor);
-    background: var(--inputActionActiveBackgroundColor);
+    background: transparent;
 }
 
 .target-container {

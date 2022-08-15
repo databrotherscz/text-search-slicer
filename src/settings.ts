@@ -53,13 +53,9 @@ class InputFormatting {
 }
 
 class InputActionFormatting {
-    public fontColor: string = "#333333"; 
-    public backgroundColor: string = "#ffffff"; 
-    public hoverFontColor: string = "#333333";
-    public hoverBackgroundColor: string = "#eaeaea"; 
+    public fontColor: string = "#b3b3b3"; 
+    public hoverFontColor: string = "#808080";
     public activeFontColor: string = "#333333"; 
-    public activeBackgroundColor: string = "#d1d1d1"; 
-    public borderRadius: number = 0; 
 }
 
 class TargetFormatting {
