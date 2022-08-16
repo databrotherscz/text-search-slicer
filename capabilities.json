@@ -241,5 +241,11 @@
     "supportsHighlight": false,	
     "supportsSynchronizingFilterState": true,	
     "supportsLandingPage": true,
-    "supportsEmptyDataView": true
+    "supportsEmptyDataView": true,
+    "tooltips": {
+        "supportedTypes": {
+            "default": true,
+            "canvas": true
+        }
+    }
 }
