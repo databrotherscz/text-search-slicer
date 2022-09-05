@@ -63,9 +63,6 @@ class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        console.log(options);
-        
-
         this.eventService.renderingStarted(options);
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         

@@ -22,8 +22,8 @@
     
     color: var(--inputFieldFontColor);
     background: var(--inputFieldBackgroundColor);
-    
-    
+
+    box-sizing: border-box;
     align-items: stretch;
 }
 

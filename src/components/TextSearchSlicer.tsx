@@ -147,10 +147,10 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
 
     // PBI font size formatting is not in pure CSS px units, need to convert
     private getPbiFontSize(value: number): string {
-        return  `${value * (4/3)}px`;
+        return `${value * (4 / 3)}px`;
     }
 
-    render() {   
+    render() {
         const bodyCss = `
             :root {
                 --visualHeight: ${this.state.height}px;
@@ -185,56 +185,58 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
             }
         `;
 
-        return(
-            this.state.isLoaded? (
-                <div className="visual-container">
-                    {
-                        (this.state.targets && this.state.targets.length > 0) ? (
-                            <>
-                                <style> {bodyCss} </style>
-                                <div className="input-container">
-                                    <input
-                                        className="input-field"
-                                        placeholder={this.state.settings?.inputFormatting?.placeholderString}
-                                        type="text"
-                                        value={this.state.inputText}
-                                        onChange={this.onTextInputChange}
-                                        onKeyDown={this.onTextInputKeyDown}
-                                        onBlur={this.onTextInputBlur} />
-                                    <button className="input-button" onClick={this.onSearchButtonClick}>
-                                        <SearchIcon></SearchIcon >
-                                    </button>
-                                    <button className="input-button" onClick={this.onClearButtonClick}>
-                                        <CrossIcon></CrossIcon >
-                                    </button>
-                                </div>
-    
-                                {
-                                    (this.state.targets.length > 1) ? (
-                                        <div className="target-container">
-                                            {this.state.targets.map((target, targetIndex) => (
-                                                <button className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
-                                                    {target.displayName}
-                                                </button>
-                                            ))}
+        return (
+            <>
+                <style> {bodyCss} </style>
+                {
+                    (this.state.isLoaded) ? (
+                        <div className="visual-container">
+                            {
+                                (this.state.targets && this.state.targets.length > 0) ? (
+                                    <>
+                                        <div className="input-container">
+                                            <input
+                                                className="input-field"
+                                                placeholder={this.state.settings?.inputFormatting?.placeholderString}
+                                                type="text"
+                                                value={this.state.inputText}
+                                                onChange={this.onTextInputChange}
+                                                onKeyDown={this.onTextInputKeyDown}
+                                                onBlur={this.onTextInputBlur} />
+                                            <button className="input-button" onClick={this.onSearchButtonClick}>
+                                                <SearchIcon></SearchIcon >
+                                            </button>
+                                            <button className="input-button" onClick={this.onClearButtonClick}>
+                                                <CrossIcon></CrossIcon >
+                                            </button>
                                         </div>
-                                    ) : (
-                                        null
-                                    )
-                                }
-                            </>
-                        ) : (
-                            <NoFieldsPlaceholder></NoFieldsPlaceholder>
-                        )
-                    }
-                </div>
-            ) : (
-                null
-            )
+
+                                        {
+                                            (this.state.targets.length > 1) ? (
+                                                <div className="target-container">
+                                                    {this.state.targets.map((target, targetIndex) => (
+                                                        <button className={`target-button ${this.state.currentTargetIndex == targetIndex ? "target-button__active" : ""}`} onClick={() => this.onTargetButtonClick(targetIndex)}>
+                                                            {target.displayName}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                null
+                                            )
+                                        }
+                                    </>
+                                ) : (
+                                    <NoFieldsPlaceholder></NoFieldsPlaceholder>
+                                )
+                            }
+                        </div>
+                    ) : (
+                        null
+                    )
+                }
+            </>
         );
     }
-
-
 }
 
 export default TextSearchSlicer;
