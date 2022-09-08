@@ -29,7 +29,7 @@ Customizable Power BI slicer that enables searching within one or more text fiel
 1) After adding **more than one text fields** in the visual setup pane, **additional buttons** are displayed under the input field.
 2) If the button is **highlighted** it means that filter is going to be applied to the corresponding field.
 3) It is possible to **change currently filtered field** by clicking the **corresponding button**. 
-4) If any search is already applied and the filtered field is changed then the new filter is **applied immediately without confirming** by ENTER key or the search button.
+4) If any search is already applied and the filtered field is changed then the new filter is **applied immediately without confirming by ENTER key or the search button**.
 
 ### Removing the filter
 1) The filter is removed after pressing the **clear button** or after **confirming an empty search**.
