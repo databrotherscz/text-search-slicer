@@ -5,6 +5,7 @@ Customizable Power BI slicer that enables searching within one or more text fiel
 
 ## Issues 🐞
 - Filtering hierarchy fields is not supported.
+- Power BI native 'Clear all slicers' button not supported.
 
 *Feel free to create an **issue** with the problem description or **contact us** at [info@databrothers.cz](mailto:info@databrothers.cz).*
 
