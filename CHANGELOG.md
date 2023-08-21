@@ -17,3 +17,8 @@
 
 ### 1.0.4 | 2022-09-06
 - fix border formatting issues
+
+### 1.1.0 | 2023-08-21
+- update supported API version (new formatting pane)
+- align visual width to native slicer
+- use of pixel convertion utils for formatting

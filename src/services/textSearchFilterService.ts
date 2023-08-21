@@ -22,7 +22,7 @@ class TextSearchFilterService {
         });
         
         const filter : IAdvancedFilter = {
-            $schema: "http://powerbi.com/product/schema#advanced",
+            $schema: "https://powerbi.com/product/schema#advanced",
             ...(new AdvancedFilter(target, "And", conditions))
         };
 

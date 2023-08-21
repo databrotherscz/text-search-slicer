@@ -1,10 +1,12 @@
+
 import ITextSearchSlicerTarget from "../models/ITextSearchSlicerTarget";
 import * as React from "react";
 import TextSearchFilterService from "../services/textSearchFilterService";
-import { VisualSettings } from "../settings";
+import { VisualFormattingSettingsModel } from "../settings";
 import "../style/TextSearchSlicer.css";
 import { CrossIcon, SearchIcon } from "./InputButtonIcons";
 import NoFieldsPlaceholder from "./NoFieldsPlaceholder";
+import { pixelConverter as PixelConverter } from "powerbi-visuals-utils-typeutils";
 
 // -------------------- TYPES --------------------
 
@@ -12,7 +14,7 @@ interface ITextSearchSlicerState {
     isLoaded?: boolean,
     width?: number,
     height?: number,
-    settings?: VisualSettings,
+    formattingSettings?: VisualFormattingSettingsModel,
     inputText?: string,
     targets?: ITextSearchSlicerTarget[],
     currentTargetIndex?: number,
@@ -32,7 +34,7 @@ const initialState: ITextSearchSlicerState = {
     isLoaded: false,
     width: 10,
     height: 10,
-    settings: null,
+    formattingSettings: null,
 
     inputText: null,
     // all columns
@@ -95,20 +97,20 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
 
     private onSearchButtonClick() {
         this.applyFilter();
-    };
+    }
 
     private onClearButtonClick() {
         this.setState({
             inputText: ""
         });
         this.props.textSearchFilterService.clearFilter();
-    };
+    }
 
-    private onTextInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    private onTextInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {     
         if (e.key === "Enter") {
             this.applyFilter();
         }
-    };
+    }
 
     private onTextInputBlur(e: React.FocusEvent<HTMLInputElement, Element>) {
         if (!e.relatedTarget || (!e.relatedTarget.classList.contains("input-button") && !e.relatedTarget.classList.contains("target-button"))) {
@@ -116,7 +118,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                 inputText: prevState.currentFilterValue || ""
             }));
         }
-    };
+    }
 
     private onTargetButtonClick(selectedIndex: number) {
         this.setState({
@@ -124,7 +126,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
         });
 
         this.applyFilter(selectedIndex);
-    };
+    }
 
     private applyFilter(newTargetIndex: number = null) {
         const targetIndex = newTargetIndex === null ? this.state.currentTargetIndex : newTargetIndex;
@@ -135,7 +137,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
         else {
             this.props.textSearchFilterService.clearFilter();
         }
-    };
+    }
 
     private getInputFieldPadding(padding: number): string {
         return `${padding + 1}px ${padding + 1}px ${padding - 1}px ${padding + 1}px`;
@@ -155,33 +157,33 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
             :root {
                 --visualHeight: ${this.state.height}px;
                 --visualWidth: ${this.state.width}px;
-                --fontFamily: ${this.state.settings?.generalFormatting?.fontFamily};
-                --fontSize: ${this.getPbiFontSize(this.state.settings?.generalFormatting?.fontSize)};
+                --fontFamily: ${this.state.formattingSettings?.generalCard?.fontFamily.value};
+                --fontSize: ${PixelConverter.fromPointToPixel(this.state.formattingSettings?.generalCard?.fontSize.value)}px;
                 
-                --inputFieldFontColor: ${this.state.settings?.inputFormatting?.fontColor};
-                --inputFieldBackgroundColor: ${this.state.settings?.inputFormatting?.backgroundColor};
-                --inputFieldPadding: ${this.getInputFieldPadding(this.state.settings?.inputFormatting?.padding)};
-                --inputFieldBorderColor: ${this.state.settings?.inputFormatting?.borderColor};
-                --inputFieldBorderThickness: ${this.state.settings?.inputFormatting?.borderThickness}px;
-                --inputFieldBorderRadius: ${this.state.settings?.inputFormatting?.borderRadius}px;
+                --inputFieldFontColor: ${this.state.formattingSettings?.inputCard?.fontColor.value.value};
+                --inputFieldBackgroundColor: ${this.state.formattingSettings?.inputCard?.backgroundColor.value.value};
+                --inputFieldPadding: ${this.getInputFieldPadding(this.state.formattingSettings?.inputCard?.padding.value)};
+                --inputFieldBorderColor: ${this.state.formattingSettings?.inputCard?.borderColor.value.value};
+                --inputFieldBorderThickness: ${this.state.formattingSettings?.inputCard?.borderThickness.value}px;
+                --inputFieldBorderRadius: ${this.state.formattingSettings?.inputCard?.borderRadius.value}px;
                 
-                --placeholderFontColor: ${this.state.settings?.inputFormatting?.placeholderFontColor};
+                --placeholderFontColor: ${this.state.formattingSettings?.inputCard?.placeholderFontColor.value.value};
 
-                --inputActionFontColor: ${this.state.settings?.inputActionFormatting?.fontColor};
-                --inputActionHoverFontColor: ${this.state.settings?.inputActionFormatting?.hoverFontColor};
-                --inputActionActiveFontColor: ${this.state.settings?.inputActionFormatting?.activeFontColor};
+                --inputActionFontColor: ${this.state.formattingSettings?.inputActionCard?.fontColor.value.value};
+                --inputActionHoverFontColor: ${this.state.formattingSettings?.inputActionCard?.hoverFontColor.value.value};
+                --inputActionActiveFontColor: ${this.state.formattingSettings?.inputActionCard?.activeFontColor.value.value};
 
-                --targetButtonBorderRadius: ${this.state.settings?.targetFormatting?.borderRadius}px;
-                --targetButtonPadding: ${this.getTargetButtonPadding(this.state.settings?.targetFormatting?.padding)};
+                --targetButtonBorderRadius: ${this.state.formattingSettings?.targetCard?.borderRadius.value}px;
+                --targetButtonPadding: ${this.getTargetButtonPadding(this.state.formattingSettings?.targetCard?.padding.value)};
                 
-                --targetButtonFontColor: ${this.state.settings?.targetFormatting?.fontColor};
-                --targetButtonBackgroundColor: ${this.state.settings?.targetFormatting?.backgroundColor};
+                --targetButtonFontColor: ${this.state.formattingSettings?.targetCard?.fontColor.value.value};
+                --targetButtonBackgroundColor: ${this.state.formattingSettings?.targetCard?.backgroundColor.value.value};
 
-                --targetButtonHoverFontColor: ${this.state.settings?.targetFormatting?.hoverFontColor};
-                --targetButtonHoverBackgroundColor: ${this.state.settings?.targetFormatting?.hoverBackgroundColor};
+                --targetButtonHoverFontColor: ${this.state.formattingSettings?.targetCard?.hoverFontColor.value.value};
+                --targetButtonHoverBackgroundColor: ${this.state.formattingSettings?.targetCard?.hoverBackgroundColor.value.value};
 
-                --targetButtonActiveFontColor: ${this.state.settings?.targetFormatting?.activeFontColor};
-                --targetButtonActiveBackgroundColor: ${this.state.settings?.targetFormatting?.activeBackgroundColor};
+                --targetButtonActiveFontColor: ${this.state.formattingSettings?.targetCard?.activeFontColor.value.value};
+                --targetButtonActiveBackgroundColor: ${this.state.formattingSettings?.targetCard?.activeBackgroundColor.value.value};
             }
         `;
 
@@ -197,7 +199,7 @@ class TextSearchSlicer extends React.Component<ITextSearchSlicerProps, ITextSear
                                         <div className="input-container">
                                             <input
                                                 className="input-field"
-                                                placeholder={this.state.settings?.inputFormatting?.placeholderString}
+                                                placeholder={this.state.formattingSettings?.inputCard?.placeholderString.value}
                                                 type="text"
                                                 value={this.state.inputText}
                                                 onChange={this.onTextInputChange}
