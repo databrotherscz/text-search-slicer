@@ -19,10 +19,11 @@
     border-width: var(--inputFieldBorderThickness);
     border-color: var(--inputFieldBorderColor);
     border-radius: var(--inputFieldBorderRadius);
+
     
     color: var(--inputFieldFontColor);
     background: var(--inputFieldBackgroundColor);
-
+    
     box-sizing: border-box;
     align-items: stretch;
 }
@@ -30,6 +31,7 @@
 .input-field {
     width: 100%;
     padding: var(--inputFieldPadding);
+
     border: none;
     
     font-family: inherit;
@@ -42,7 +44,7 @@
     display: block;
     width: fit-content;
     margin: -0.5px 0 0 0;
-    padding: 0 5px;
+    padding: 0 3px;
     border: 0px;
     
     font-size: inherit;

@@ -17,7 +17,12 @@
                 "categories": {
                     "for": {
                         "in": "fields"
-                    }
+                    },
+                    "dataReductionAlgorithm": {
+                        "window": {
+                            "count": 30000
+                        }
+                    }  
                 }
             }
         }
@@ -35,10 +40,8 @@
             }
         },
         "generalFormatting": {
-            "displayName": "General",
             "properties": {
                 "fontSize": {
-                    "displayName": "Font size",
                     "type": {
                         "formatting": {
                             "fontSize": true
@@ -46,7 +49,6 @@
                     }
                 },
                 "fontFamily": {
-                    "displayName": "Font family",
                     "type": {
                         "formatting": {
                             "fontFamily": true
@@ -56,10 +58,8 @@
             }
         },
         "inputFormatting": {
-            "displayName": "Input field",
             "properties": {
                 "fontColor": {
-                    "displayName": "Font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -69,7 +69,6 @@
                     }
                 },
                 "backgroundColor": {
-                    "displayName": "Background color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -79,13 +78,11 @@
                     }
                 },
                 "padding": {
-                    "displayName": "Padding",
                     "type": {
                         "numeric": true
                     }
                 },
                 "borderColor": {
-                    "displayName": "Border color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -95,19 +92,16 @@
                     }
                 },
                 "borderThickness": {
-                    "displayName": "Border thickness",
                     "type": {
                         "numeric": true
                     }
                 },
                 "borderRadius": {
-                    "displayName": "Border radius",
                     "type": {
                         "numeric": true
                     }
                 },
                 "placeholderFontColor": {
-                    "displayName": "Placeholder font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -117,7 +111,6 @@
                     }
                 },
                 "placeholderString": {
-                    "displayName": "Placeholder string",
                     "type": {   
                         "text": true
                     }
@@ -125,10 +118,8 @@
             }
         },
         "inputActionFormatting": {
-            "displayName": "Input field action",
             "properties": {
                 "fontColor": {
-                    "displayName": "Font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -138,7 +129,6 @@
                     }
                 },
                 "hoverFontColor": {
-                    "displayName": "Hover font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -148,7 +138,6 @@
                     }
                 },
                 "activeFontColor": {
-                    "displayName": "Active font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -160,10 +149,8 @@
             }
         },
         "targetFormatting": {
-            "displayName": "Field selection",
             "properties": {
                 "fontColor": {
-                    "displayName": "Font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -173,7 +160,6 @@
                     }
                 },
                 "backgroundColor": {
-                    "displayName": "Background color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -183,7 +169,6 @@
                     }
                 },
                 "hoverFontColor": {
-                    "displayName": "Hover font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -193,7 +178,6 @@
                     }
                 },
                 "hoverBackgroundColor": {
-                    "displayName": "Hover background color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -203,7 +187,6 @@
                     }
                 },
                 "activeFontColor": {
-                    "displayName": "Active font color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -213,7 +196,6 @@
                     }
                 },
                 "activeBackgroundColor": {
-                    "displayName": "Active background color",
                     "type": {   
                         "fill": {
                             "solid": {
@@ -223,13 +205,11 @@
                     }
                 },
                 "padding": {
-                    "displayName": "Padding",
                     "type": {
                         "numeric": true
                     }
                 },
                 "borderRadius": {
-                    "displayName": "Border radius",
                     "type": {
                         "numeric": true
                     }
@@ -247,5 +227,6 @@
             "default": true,
             "canvas": true
         }
-    }
+    },
+    "privileges": []
 }

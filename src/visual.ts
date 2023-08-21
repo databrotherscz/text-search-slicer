@@ -33,26 +33,30 @@ import * as ReactDOM from "react-dom";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
-import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
-import VisualObjectInstance = powerbi.VisualObjectInstance;
-import DataView = powerbi.DataView;
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import IVisualEventService = powerbi.extensibility.IVisualEventService;
-import { VisualSettings } from "./settings";
+import { VisualFormattingSettingsModel } from "./settings";
 import TextSearchFilterService from "./services/textSearchFilterService";
 import { IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
+import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
 
 class Visual implements IVisual {
     private target: HTMLElement;
-    private settings: VisualSettings;
+    
+    private formattingSettings: VisualFormattingSettingsModel;
+    private formattingSettingsService: FormattingSettingsService;
+
     private reactRoot: React.ComponentElement<any, any>;
+
     private selectionManager: ISelectionManager;
     private eventService: IVisualEventService;
 
     constructor(options: VisualConstructorOptions) {
+        console.log("Visual constructor", options);
+        
         this.selectionManager = options.host.createSelectionManager();
         this.eventService = options.host.eventService;
+        this.formattingSettingsService = new FormattingSettingsService();
         this.target = options.element;
         this.registerContextMenuHandler();
         
@@ -64,9 +68,12 @@ class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         this.eventService.renderingStarted(options);
-        this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         
-        let newState = this.getUpdatedVisualState(options);
+        console.log('Visual update', options);
+        
+        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
+        
+        const newState = this.getUpdatedVisualState(options);
         TextSearchSlicer.update(newState);
 
         this.eventService.renderingFinished(options);
@@ -78,11 +85,11 @@ class Visual implements IVisual {
         const currentFilterValue = filter && filter.conditions[0].value?.toString() || "";
         const currentFilterTarget = filter && filter.target as IFilterColumnTarget;
 
-        let newState: ITextSearchSlicerState = {
+        const newState: ITextSearchSlicerState = {
             isLoaded: true,
-            height: this.calculateVisualSize(options.viewport.height, 5),
-            width: this.calculateVisualSize(options.viewport.width, 10),
-            settings: this.settings,
+            height: options.viewport.height - 5,
+            width: options.viewport.width - 10,
+            formattingSettings: this.formattingSettings,
             currentFilterValue: currentFilterValue,
             inputText: currentFilterValue,
             targets: []
@@ -125,19 +132,8 @@ class Visual implements IVisual {
         });
     }
 
-    private calculateVisualSize(size: number, margin: number) {
-        return size - margin - 2;
-    }
-
-    private static parseSettings(dataView: DataView): VisualSettings {
-        return <VisualSettings>VisualSettings.parse(dataView);
-    }
-
-    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-        return VisualSettings.enumerateObjectInstances(
-            this.settings || VisualSettings.getDefault(),
-            options
-        );
+    public getFormattingModel(): powerbi.visuals.FormattingModel {
+        return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
     }
 }
 
