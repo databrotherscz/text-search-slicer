@@ -9,7 +9,7 @@
         "supportUrl": "https://databrothers.cz",
         "gitHubUrl": "https://github.com/databrothers-code-storage/text-search-slicer"
     },
-    "apiVersion": "5.4.0",
+    "apiVersion": "5.10.0",
     "author": {
         "name": "DataBrothers s.r.o.",
         "email": "info@databrothers.cz"
